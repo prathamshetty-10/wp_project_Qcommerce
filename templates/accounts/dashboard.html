@@ -1,0 +1,38 @@
+<!-- templates/accounts/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Welcome, {{ user.username }}</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                User Details
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+                <p><strong>Address:</strong> {{ user.address|default:"Not provided" }}</p>
+            </div>
+        </div>
+
+        <h3>Recent Orders</h3>
+        {% if recent_orders %}
+            <div class="list-group">
+                {% for order in recent_orders %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Order #{{ order.id }}</h5>
+                            <small>{{ order.created_at|date:"M d, Y" }}</small>
+                        </div>
+                        <p class="mb-1">Total: ${{ order.total_price }}</p>
+                        <small>Status: {{ order.get_status_display }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No recent orders.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
